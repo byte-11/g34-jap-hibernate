@@ -1,18 +1,14 @@
 package uz.pdp.g34jpahibernate.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UuidGenerator;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -24,6 +20,18 @@ import java.util.UUID;
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
+@NamedQueries(
+        {
+                @NamedQuery(name = "User.delete", query = "DELETE FROM User u WHERE u.id = ?1")
+        }
+)
+
+@NamedNativeQueries(
+        {
+                @NamedNativeQuery(name = "User.findAll", query = "SELECT * FROM users", resultClass = User.class)
+        }
+)
+@ToString
 public class User {
 
     @Id
@@ -48,7 +56,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)*/
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String email;
 
     @Column(length = 16)
